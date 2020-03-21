@@ -23,27 +23,38 @@ class _ContactListEntryState extends State<ContactListEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-        child: InkWell(
+    return BlocListener<SelectedContactsBloc, SelectedContactsState>(
+      condition: (s1, s2) => s2 is ContactRemovedState,
+      listener: (context, state){
+        if(state is ContactRemovedState && state.contact.contact.identifier == widget.contact.identifier){
+          setState(() {
+            pressed = false;
+          });
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: Material(
+          color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          onTap: pressed
-              ? null
-              : () {
-                  setState(() {
-                    if (pressed == false) pressed = true;
-                  });
-                },
-          child: Container(
-            padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
-            child: Row(
-              children: <Widget>[
-                if (pressed) ..._getStatusWidgets(),
-                if (!pressed) ..._getContactWidgets(),
-              ],
+          child: InkWell(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            onTap: BlocProvider.of<SelectedContactsBloc>(context)
+                .isSelected(widget.contact) || pressed
+                ? null
+                : () {
+                    setState(() {
+                      if (pressed == false) pressed = true;
+                    });
+                  },
+            child: Container(
+              padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+              child: Row(
+                children: <Widget>[
+                  if (pressed) ..._getStatusWidgets(),
+                  if (!pressed) ..._getContactWidgets(),
+                ],
+              ),
             ),
           ),
         ),

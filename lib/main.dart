@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          fontFamily: 'Inter',
           // This is the theme of your application.
           //
           // Try running your application with "flutter run". You'll see the

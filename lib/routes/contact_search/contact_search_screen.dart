@@ -4,7 +4,6 @@ import 'package:social_contact_tracker/routes/contact_search/contact_search_bloc
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/contact_list_entry.dart';
 import 'package:social_contact_tracker/widgets/encounter_bottom_sheet_title.dart';
-import 'package:social_contact_tracker/widgets/flat_round_icon_button.dart';
 import 'package:social_contact_tracker/widgets/encountered_contact_entry.dart';
 
 class ContactSearchScreen extends StatelessWidget {
@@ -25,6 +24,7 @@ class ContactSearchScreen extends StatelessWidget {
         builder: (context) => Scaffold(
           backgroundColor: Color(0xFFF3F5FA),
           appBar: AppBar(
+            title: Text('Begegnungen hinzufügen', style: TextStyle(color: Color(0xFF2D3748))),
             backgroundColor: Colors.white,
             elevation: 4.0,
             shape: RoundedRectangleBorder(
@@ -34,10 +34,10 @@ class ContactSearchScreen extends StatelessWidget {
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(100),
+              preferredSize: Size.fromHeight(80),
               child: Container(
                 margin: const EdgeInsets.only(
-                    top: 40, bottom: 16, left: 16, right: 16),
+                    top: 0, bottom: 16, left: 16, right: 16),
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Kontakte suchen',

@@ -7,8 +7,7 @@ import 'flat_round_icon_button.dart';
 
 class EncounterBottomSheetTitle extends SliverPersistentHeaderDelegate {
 
-  static const HEIGHT = 60.0;
-
+  static const HEIGHT = 61.0;
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {

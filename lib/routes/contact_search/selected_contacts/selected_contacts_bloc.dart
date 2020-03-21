@@ -17,6 +17,9 @@ class SelectedContactsBloc
   @override
   SelectedContactsState get initialState => NoContactsSelectedState();
 
+  bool isSelected(Contact contact) =>
+      contacts.any((c) => c.contact.identifier == contact.identifier);
+
   @override
   Stream<SelectedContactsState> mapEventToState(
       SelectedContactsEvent event) async* {
@@ -25,8 +28,8 @@ class SelectedContactsBloc
         yield ContactsSelectedState();
       }
 
-      contacts.add(
-          SelectedContact(event.contact, event.encounterType, event.avatarColor));
+      contacts.add(SelectedContact(
+          event.contact, event.encounterType, event.avatarColor));
       yield ContactInsertState(contacts.length - 1);
     }
 
