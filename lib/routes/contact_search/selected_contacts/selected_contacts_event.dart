@@ -6,10 +6,10 @@ abstract class SelectedContactsEvent {}
 
 class SelectContactEvent extends SelectedContactsEvent {
   final Contact contact;
-  final ContactType contactType;
+  final EncounterType encounterType;
   final Color avatarColor;
 
-  SelectContactEvent(this.contact, this.contactType, this.avatarColor);
+  SelectContactEvent(this.contact, this.encounterType, this.avatarColor);
 }
 
 class RemoveContactEvent extends SelectedContactsEvent {

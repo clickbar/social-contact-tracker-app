@@ -2,7 +2,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_color/random_color.dart';
-import 'package:social_contact_tracker/model/contact_type.dart';
+import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/contact_avatar.dart';
 
@@ -66,12 +66,12 @@ class _ContactListEntryState extends State<ContactListEntry> {
                 print('Rebuild: ${widget.contact.displayName} => $state');
 
                 try {
-                  final contactType =
+                  final encounterType =
                       BlocProvider.of<SelectedContactsBloc>(context)
                           .contacts
                           .firstWhere((c) =>
                               c.contact.identifier == widget.contact.identifier)
-                          .contactType;
+                          .encounterType;
 
                   return Positioned(
                     bottom: -6,
@@ -91,12 +91,12 @@ class _ContactListEntryState extends State<ContactListEntry> {
                         height: 20,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: contactType.toBadgeBackgroundColor(),
+                          color: encounterType.toBadgeBackgroundColor(),
                           border: Border.all(color: Colors.white),
                         ),
                         child: Icon(
                           Icons.done,
-                          color: contactType.toBadgeTextColorColor(),
+                          color: encounterType.toBadgeTextColorColor(),
                           size: 12,
                         ),
                       ),
@@ -167,7 +167,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
             scale: value,
             child: child,
           ),
-          child: _getBadge(ContactType.DIRECT),
+          child: _getBadge(EncounterType.DIRECT),
         ),
         const SizedBox(width: 8),
         TweenAnimationBuilder(
@@ -178,7 +178,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
             scale: value,
             child: child,
           ),
-          child: _getBadge(ContactType.SAME_ROOM),
+          child: _getBadge(EncounterType.SAME_ROOM),
         ),
         const SizedBox(width: 8),
         TweenAnimationBuilder(
@@ -189,7 +189,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
             scale: value,
             child: child,
           ),
-          child: _getBadge(ContactType.TWO_METERS),
+          child: _getBadge(EncounterType.TWO_METERS),
         ),
         Spacer(),
         TweenAnimationBuilder(
@@ -214,14 +214,14 @@ class _ContactListEntryState extends State<ContactListEntry> {
         )
       ];
 
-  _getBadge(ContactType contactType) {
+  _getBadge(EncounterType encounterType) {
     return Material(
       borderRadius: BorderRadius.all(Radius.circular(10)),
-      color: contactType.toBadgeBackgroundColor(),
+      color: encounterType.toBadgeBackgroundColor(),
       child: InkWell(
         onTap: () {
           BlocProvider.of<SelectedContactsBloc>(context).add(SelectContactEvent(
-              widget.contact, contactType, widget.avatarColor));
+              widget.contact, encounterType, widget.avatarColor));
           setState(() {
             pressed = false;
           });
@@ -230,9 +230,9 @@ class _ContactListEntryState extends State<ContactListEntry> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           child: Text(
-            contactType.toDisplayString(),
+            encounterType.toDisplayString(),
             style: TextStyle(
-              color: contactType.toBadgeTextColorColor(),
+              color: encounterType.toBadgeTextColorColor(),
               fontSize: 11,
               fontWeight: FontWeight.w500,
             ),

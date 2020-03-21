@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
-import 'package:social_contact_tracker/model/contact_type.dart';
+import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:social_contact_tracker/model/selected_contact.dart';
 
 part 'selected_contacts_event.dart';
@@ -26,7 +26,7 @@ class SelectedContactsBloc
       }
 
       contacts.add(
-          SelectedContact(event.contact, event.contactType, event.avatarColor));
+          SelectedContact(event.contact, event.encounterType, event.avatarColor));
       yield ContactInsertState(contacts.length - 1);
     }
 

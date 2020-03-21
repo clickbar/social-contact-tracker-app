@@ -1,7 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_contact_tracker/model/contact_type.dart';
+import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:social_contact_tracker/model/selected_contact.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 
@@ -30,14 +30,14 @@ class MetContactEntry extends StatelessWidget {
             Spacer(),
             Container(
               decoration: BoxDecoration(
-                color: selectedContact.contactType.toBadgeBackgroundColor(),
+                color: selectedContact.encounterType.toBadgeBackgroundColor(),
                 borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
               child: Text(
-                selectedContact.contactType.toDisplayString(),
+                selectedContact.encounterType.toDisplayString(),
                 style: TextStyle(
-                    color: selectedContact.contactType.toBadgeTextColorColor(),
+                    color: selectedContact.encounterType.toBadgeTextColorColor(),
                     fontSize: 11,
                     fontWeight: FontWeight.w500),
               ),
