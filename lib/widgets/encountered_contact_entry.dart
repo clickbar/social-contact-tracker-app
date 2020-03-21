@@ -1,4 +1,3 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_contact_tracker/model/encounter_type.dart';
@@ -7,12 +6,12 @@ import 'package:social_contact_tracker/routes/contact_search/selected_contacts/s
 
 import 'contact_avatar.dart';
 
-class MetContactEntry extends StatelessWidget {
+class EncounteredContactEntry extends StatelessWidget {
   final SelectedContact selectedContact;
   final Animation<double> animation;
   final slideTween = Tween<Offset>(begin: Offset(-20, 0), end: Offset(0, 0));
 
-  MetContactEntry(this.selectedContact, {Key key, this.animation})
+  EncounteredContactEntry(this.selectedContact, {Key key, this.animation})
       : super(key: key);
 
   @override

@@ -5,7 +5,7 @@ import 'package:social_contact_tracker/routes/contact_search/selected_contacts/s
 import 'package:social_contact_tracker/widgets/contact_list_entry.dart';
 import 'package:social_contact_tracker/widgets/encounter_bottom_sheet_title.dart';
 import 'package:social_contact_tracker/widgets/flat_round_icon_button.dart';
-import 'package:social_contact_tracker/widgets/met_contact_entry.dart';
+import 'package:social_contact_tracker/widgets/encountered_contact_entry.dart';
 
 class ContactSearchScreen extends StatelessWidget {
   final GlobalKey<SliverAnimatedListState> _listKey =
@@ -183,7 +183,7 @@ class ContactSearchScreen extends StatelessWidget {
                           key: _listKey,
                           initialItemCount: 0,
                           itemBuilder: (context, index, animation) {
-                            return MetContactEntry(
+                            return EncounteredContactEntry(
                               BlocProvider.of<SelectedContactsBloc>(context)
                                   .contacts[index],
                               animation: animation,
@@ -202,7 +202,7 @@ class ContactSearchScreen extends StatelessWidget {
                             if (state is ContactRemovedState) {
                               _listKey.currentState.removeItem(state.index,
                                   (context, animation) {
-                                return MetContactEntry(
+                                return EncounteredContactEntry(
                                   state.contact,
                                   animation: animation,
                                 );
