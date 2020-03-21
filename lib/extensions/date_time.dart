@@ -1,4 +1,11 @@
+import 'package:intl/intl.dart';
+
 extension DateTimeExtensions on DateTime {
+
+  static final _SHORT_DATE_FORMAT = DateFormat('dd.MM.yyyy');
+
+  String toShortDateFormat() => _SHORT_DATE_FORMAT.format(this);
+
   String toDisplayDate() {
     final dayDifference = DateTime.now().difference(this).inDays;
 

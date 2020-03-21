@@ -20,3 +20,7 @@ class ContactRemovedState extends SelectedContactsState {
 
   ContactRemovedState(this.index, this.contact);
 }
+
+class StoringEncountersState extends SelectedContactsState {}
+
+class EncountersStoredState extends SelectedContactsState {}
