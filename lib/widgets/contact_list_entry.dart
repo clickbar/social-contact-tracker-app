@@ -54,6 +54,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
                     pressed
                 ? null
                 : () {
+              print(widget.contact.identifier);
                     setState(() {
                       if (pressed == false) pressed = true;
                     });

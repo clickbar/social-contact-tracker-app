@@ -1,9 +1,11 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_screen.dart';
+import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/phone_input_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/sign_in_bloc.dart';
 import 'package:social_contact_tracker/routes/sign_in/verification_code_input_screen.dart';
@@ -14,8 +16,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+
+    Contact c = Contact.fromMap({'identifier': '3037'});
+    ContactsService.getAvatar(c).then((value) => print('Len of u8Int List=${value.length}'));
+
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(),
       child: MaterialApp(
@@ -34,7 +41,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {
-          '/': (_) => ContactSearchScreen(),
+          '/': (_) => EncounterTimelineScreen(),
           '/home': (_) => HomePage(),
           '/smscode': (_) => VerificationCodeInputScreen(),
         },
