@@ -1,13 +1,18 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_color/random_color.dart';
+import 'package:social_contact_tracker/model/contact_type.dart';
+import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
+import 'package:social_contact_tracker/widgets/contact_avatar.dart';
 
 class ContactListEntry extends StatefulWidget {
   static final RandomColor _randomColor = RandomColor();
 
   final Contact contact;
+  final avatarColor = _randomColor.randomColor(colorHue: ColorHue.blue);
 
-  const ContactListEntry(this.contact, {Key key}) : super(key: key);
+  ContactListEntry(this.contact, {Key key}) : super(key: key);
 
   @override
   _ContactListEntryState createState() => _ContactListEntryState();
@@ -47,33 +52,12 @@ class _ContactListEntryState extends State<ContactListEntry> {
   }
 
   _getContactWidgets() => [
-        widget.contact.avatar.isNotEmpty
-            ? ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                child: Image.memory(
-                  widget.contact.avatar,
-                  width: 42,
-                  height: 42,
-                ))
-            : Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: ContactListEntry._randomColor
-                      .randomColor(colorHue: ColorHue.blue),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Center(
-                  child: Text(
-                    widget.contact.initials(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.white54,
-                    ),
-                  ),
-                ),
-              ),
+        ContactAvatar(
+          widget.contact,
+          size: 42,
+          radius: 10,
+          avatarColor: widget.avatarColor,
+        ),
         const SizedBox(width: 16),
         Expanded(
           child: Column(
@@ -114,20 +98,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
             scale: value,
             child: child,
           ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Color(0xFFFBECDE)),
-            child: Text(
-              'Direkter Kontakt',
-              style: TextStyle(
-                color: Color(0xFF803219),
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+          child: _getBadge(ContactType.DIRECT),
         ),
         const SizedBox(width: 8),
         TweenAnimationBuilder(
@@ -138,20 +109,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
             scale: value,
             child: child,
           ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Color(0xFFFCF5BA)),
-            child: Text(
-              'Selber Raum',
-              style: TextStyle(
-                color: Color(0xFF6B3D1D),
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+          child: _getBadge(ContactType.SAME_ROOM),
         ),
         const SizedBox(width: 8),
         TweenAnimationBuilder(
@@ -162,20 +120,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
             scale: value,
             child: child,
           ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Color(0xFFE3F6ED)),
-            child: Text(
-              '2m Abstand',
-              style: TextStyle(
-                color: Color(0xFF225240),
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+          child: _getBadge(ContactType.TWO_METERS),
         ),
         Spacer(),
         TweenAnimationBuilder(
@@ -199,4 +144,29 @@ class _ContactListEntryState extends State<ContactListEntry> {
           ),
         )
       ];
+
+  _getBadge(ContactType contactType) {
+    return Material(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      color: contactType.toBadgeBackgroundColor(),
+      child: InkWell(
+        onTap: () {
+          BlocProvider.of<SelectedContactsBloc>(context)
+              .add(SelectContactEvent(widget.contact, contactType, widget.avatarColor));
+        },
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          child: Text(
+            contactType.toDisplayString(),
+            style: TextStyle(
+              color: contactType.toBadgeTextColorColor(),
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
