@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
+import 'package:social_contact_tracker/widgets/change_status_bar_icon_brightness.dart';
 import 'package:social_contact_tracker/widgets/contact_list_entry.dart';
 import 'package:social_contact_tracker/widgets/encounter_bottom_sheet_title.dart';
 import 'package:social_contact_tracker/widgets/encountered_contact_entry.dart';
@@ -25,10 +26,13 @@ class ContactSearchScreen extends StatelessWidget {
         builder: (context) => Scaffold(
           backgroundColor: Color(0xFFF3F5FA),
           appBar: AppBar(
-            title: Text('Begegnungen hinzufügen',
-                style: TextStyle(color: Color(0xFF2D3748))),
+            title: Text(
+              'Begegnungen hinzufügen',
+              style: TextStyle(color: Color(0xFF2D3748)),
+            ),
             backgroundColor: Colors.white,
             elevation: 4.0,
+            brightness: Brightness.light,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(24),
@@ -53,20 +57,20 @@ class ContactSearchScreen extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Colors.transparent, width: 0.0),
-                        borderRadius:
-                            const BorderRadius.all(const Radius.circular(16.0)),
+                        borderRadius: const BorderRadius.all(
+                            const Radius.circular(16.0)),
                         gapPadding: 0.0),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Color(0xFF63B3ED), width: 1.0),
-                        borderRadius:
-                            const BorderRadius.all(const Radius.circular(16.0)),
+                        borderRadius: const BorderRadius.all(
+                            const Radius.circular(16.0)),
                         gapPadding: 0.0),
                     border: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Colors.transparent, width: 0.0),
-                        borderRadius:
-                            const BorderRadius.all(const Radius.circular(16.0)),
+                        borderRadius: const BorderRadius.all(
+                            const Radius.circular(16.0)),
                         gapPadding: 0.0),
                   ),
                 ),
@@ -144,8 +148,8 @@ class ContactSearchScreen extends StatelessWidget {
                         slivers: <Widget>[
                           SliverToBoxAdapter(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 24.0, left: 16.0),
+                              padding: const EdgeInsets.only(
+                                  top: 24.0, left: 16.0),
                               child: Text(
                                 'Zuletzt hinzugefügt',
                                 style: TextStyle(
@@ -184,7 +188,8 @@ class ContactSearchScreen extends StatelessWidget {
                             child: const SizedBox(height: 16),
                           ),
                           SliverPadding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            padding:
+                                const EdgeInsets.only(top: 16, bottom: 16),
                             sliver: SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
