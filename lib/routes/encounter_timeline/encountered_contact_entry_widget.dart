@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:social_contact_tracker/model/encountered_contact.dart';
@@ -22,11 +22,11 @@ class EncounteredContactEntryWidget extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
           child: Row(
             children: <Widget>[
-              encounteredContact.hasImage && false
+              encounteredContact.hasImage
                   ? ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Image.memory(
-                        Uint8List.fromList([]),
+                      child: Image.file(
+                        File(encounteredContact.picturePath),
                         width: 42,
                         height: 42,
                       ))

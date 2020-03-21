@@ -6,18 +6,20 @@ import 'package:social_contact_tracker/model/encounter_type.dart';
 
 class EncounteredContact {
   final String contactIdentifier;
-  final bool hasImage;
   final String initials;
+  final String picturePath;
   final Color avatarColor;
   final String displayName;
   final EncounterType encounterType;
   final CovidStatus covidStatus;
   final DateTime covidStatusUpdatedAt;
 
+  bool get hasImage => picturePath != null;
+
   EncounteredContact(
       this.contactIdentifier,
-      this.hasImage,
       this.initials,
+      this.picturePath,
       this.avatarColor,
       this.displayName,
       this.encounterType,
@@ -31,8 +33,8 @@ final kDemoEncounteredContacts = [
   DateTime.now(),
   EncounteredContact(
       '3037',
-      true,
       'AA',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Alexander Agasiev',
       EncounterType.DIRECT,
@@ -40,8 +42,8 @@ final kDemoEncounteredContacts = [
       DateTime.now()),
   EncounteredContact(
       '3037',
-      false,
       'PP',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Peter Pan',
       EncounterType.TWO_METERS,
@@ -49,8 +51,8 @@ final kDemoEncounteredContacts = [
       DateTime.now()),
   EncounteredContact(
       '3037',
-      false,
       'IN',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Idris Nematpur',
       EncounterType.DIRECT,
@@ -59,8 +61,8 @@ final kDemoEncounteredContacts = [
   DateTime.now().add(Duration(days: -1)),
   EncounteredContact(
       '3037',
-      false,
       'AK',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Alexsander Küchler',
       EncounterType.SAME_ROOM,
@@ -68,8 +70,8 @@ final kDemoEncounteredContacts = [
       DateTime.now()),
   EncounteredContact(
       '3037',
-      false,
       'PP',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Peter Pan',
       EncounterType.TWO_METERS,
@@ -78,8 +80,8 @@ final kDemoEncounteredContacts = [
   DateTime.now().add(Duration(days: -2)),
   EncounteredContact(
       '3037',
-      true,
       'AA',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Alexander Agasiev',
       EncounterType.SAME_ROOM,
@@ -87,8 +89,8 @@ final kDemoEncounteredContacts = [
       DateTime.now()),
   EncounteredContact(
       '3037',
-      false,
       'IN',
+      null,
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Idris Nematpur',
       EncounterType.DIRECT,

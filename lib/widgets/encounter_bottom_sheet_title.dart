@@ -66,7 +66,10 @@ class EncounterBottomSheetTitle extends SliverPersistentHeaderDelegate {
             padding: const EdgeInsets.only(right: 16.0),
             child: BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
               condition: (s1, s2) =>
-                  s2 is NoContactsSelectedState || s2 is ContactsSelectedState,
+                  s2 is NoContactsSelectedState ||
+                  s2 is ContactsSelectedState ||
+                  s2 is StoringEncountersState ||
+                  s2 is EncountersStoredState,
               builder: (context, state) {
                 return FlatRoundIconButton(
                   child: Text('Hinzufügen'),
@@ -76,7 +79,13 @@ class EncounterBottomSheetTitle extends SliverPersistentHeaderDelegate {
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  onTap: state is NoContactsSelectedState ? null : () {},
+                  onTap: state is NoContactsSelectedState ||
+                          state is StoringEncountersState
+                      ? null
+                      : () {
+                          BlocProvider.of<SelectedContactsBloc>(context)
+                              .add(AddToEncountersEvent());
+                        },
                 );
               },
             ),

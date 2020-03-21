@@ -35,4 +35,18 @@ extension EncounterTypeExtensions on EncounterType {
         return Color(0xFF225240);
     }
   }
+
+  String toDatabaseString() => this.toString().split('.').last;
+}
+
+EncounterType encounterTypeFromDatabaseString(String databaseString) {
+  if (databaseString == 'DIRECT') {
+    return EncounterType.DIRECT;
+  }
+
+  if (databaseString == 'SAME_ROOM') {
+    return EncounterType.SAME_ROOM;
+  }
+
+  return EncounterType.TWO_METERS;
 }

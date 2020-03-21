@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
           '/': (_) => EncounterTimelineScreen(),
           '/home': (_) => HomePage(),
           '/smscode': (_) => VerificationCodeInputScreen(),
+          '/addEncounters': (_) => ContactSearchScreen(),
         },
         initialRoute: '/',
       ),

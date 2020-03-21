@@ -17,3 +17,7 @@ class RemoveContactEvent extends SelectedContactsEvent {
 
   RemoveContactEvent(this.contact);
 }
+
+class AddToEncountersEvent extends SelectedContactsEvent {
+
+}
