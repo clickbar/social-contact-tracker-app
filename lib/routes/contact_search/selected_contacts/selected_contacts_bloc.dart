@@ -40,6 +40,7 @@ class SelectedContactsBloc
       yield ContactRemovedState(removeIndex, removedContact);
 
       if (contacts.isEmpty) {
+        await Future.delayed(Duration(milliseconds: 300));
         yield NoContactsSelectedState();
       }
     }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,13 +22,21 @@ class ContactListEntry extends StatefulWidget {
 
 class _ContactListEntryState extends State<ContactListEntry> {
   bool pressed = false;
+  bool returnFromEncounterTypeSelection;
+
+  @override
+  void initState() {
+    returnFromEncounterTypeSelection = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<SelectedContactsBloc, SelectedContactsState>(
       condition: (s1, s2) => s2 is ContactRemovedState,
-      listener: (context, state){
-        if(state is ContactRemovedState && state.contact.contact.identifier == widget.contact.identifier){
+      listener: (context, state) {
+        if (state is ContactRemovedState &&
+            state.contact.contact.identifier == widget.contact.identifier) {
           setState(() {
             pressed = false;
           });
@@ -40,7 +50,8 @@ class _ContactListEntryState extends State<ContactListEntry> {
           child: InkWell(
             borderRadius: BorderRadius.all(Radius.circular(12)),
             onTap: BlocProvider.of<SelectedContactsBloc>(context)
-                .isSelected(widget.contact) || pressed
+                        .isSelected(widget.contact) ||
+                    pressed
                 ? null
                 : () {
                     setState(() {
@@ -74,7 +85,6 @@ class _ContactListEntryState extends State<ContactListEntry> {
             ),
             BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
               builder: (context, state) {
-                print('Rebuild: ${widget.contact.displayName} => $state');
 
                 try {
                   final encounterType =
@@ -144,17 +154,47 @@ class _ContactListEntryState extends State<ContactListEntry> {
         ),
         BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
           builder: (context, state) {
+
+            print('When Icon: ${widget.contact.displayName} => $state');
+
             if (BlocProvider.of<SelectedContactsBloc>(context).contacts.any(
                 (c) => c.contact.identifier == widget.contact.identifier)) {
-              return IconButton(
-                icon: Icon(
-                  Icons.clear,
-                  color: Color(0xFF718096),
+              return Transform.rotate(
+                angle: 3 / 4.0 * pi,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.add,
+                    color: Color(0xFF718096),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<SelectedContactsBloc>(context)
+                        .add(RemoveContactEvent(widget.contact));
+                  },
                 ),
-                onPressed: () {
-                  BlocProvider.of<SelectedContactsBloc>(context)
-                      .add(RemoveContactEvent(widget.contact));
+              );
+            }
+
+
+            if (state is ContactRemovedState &&
+                state.contact.contact.identifier == widget.contact.identifier || returnFromEncounterTypeSelection) {
+              returnFromEncounterTypeSelection = false;
+              return TweenAnimationBuilder(
+                builder: (context, value, child) {
+                  return Transform.rotate(
+                    angle: value,
+                    child: child,
+                  );
                 },
+                tween: Tween<double>(begin: 3/4 * pi, end: 0),
+                curve: Curves.easeInOutCirc,
+                duration: Duration(milliseconds: 300),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.add,
+                    color: Color(0xFF718096),
+                  ),
+                  onPressed: null
+                ),
               );
             }
 
@@ -204,21 +244,24 @@ class _ContactListEntryState extends State<ContactListEntry> {
         ),
         Spacer(),
         TweenAnimationBuilder(
-          duration: Duration(milliseconds: 1000),
+          builder: (context, value, child) {
+            return Transform.rotate(
+              angle: value,
+              child: child,
+            );
+          },
+          tween: Tween<double>(begin: 0, end: 3 / 4 * pi),
           curve: Curves.easeInOutCirc,
-          tween: Tween<double>(begin: 0.0, end: 1.0),
-          builder: (context, value, child) => Transform.scale(
-            scale: value,
-            child: child,
-          ),
+          duration: Duration(milliseconds: 300),
           child: IconButton(
             icon: Icon(
-              Icons.clear,
+              Icons.add,
               color: Color(0xFF718096),
             ),
             onPressed: () {
               setState(() {
                 pressed = false;
+                returnFromEncounterTypeSelection = true;
               });
             },
           ),

@@ -5,3 +5,5 @@ part of 'contact_search_bloc.dart';
 abstract class ContactSearchEvent {}
 
 class LoadContactsEvent extends ContactSearchEvent {}
+
+class RequestContactPermissionEvent extends ContactSearchEvent {}

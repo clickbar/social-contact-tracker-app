@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    permissionTest();
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(),
       child: MaterialApp(
@@ -44,11 +43,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  permissionTest() async {
-    Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler()
-            .requestPermissions([PermissionGroup.contacts]);
-  }
+
 }
 
 class HomePage extends StatefulWidget {
