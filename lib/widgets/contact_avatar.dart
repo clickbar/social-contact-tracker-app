@@ -16,7 +16,7 @@ class ContactAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return contact.avatar.isNotEmpty
+    return contact.avatar != null && contact.avatar.isNotEmpty
         ? ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             child: Image.memory(
