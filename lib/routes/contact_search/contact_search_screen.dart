@@ -215,7 +215,7 @@ class ContactSearchScreen extends StatelessWidget {
                 },
               ),
               DraggableScrollableSheet(
-                initialChildSize: 0.3,
+                initialChildSize: 0.25,
                 builder: (BuildContext context, myscrollController) {
                   return Material(
                     elevation: 8,
