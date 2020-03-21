@@ -19,10 +19,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    Contact c = Contact.fromMap({'identifier': '3037'});
-    ContactsService.getAvatar(c).then((value) => print('Len of u8Int List=${value.length}'));
-
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(),
       child: MaterialApp(

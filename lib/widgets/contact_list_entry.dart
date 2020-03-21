@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random_color/random_color.dart';
+import 'package:social_contact_tracker/model/contact.dart';
 import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/contact_avatar.dart';
@@ -36,7 +36,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
       condition: (s1, s2) => s2 is ContactRemovedState,
       listener: (context, state) {
         if (state is ContactRemovedState &&
-            state.contact.contact.identifier == widget.contact.identifier) {
+            state.contact.contact.id == widget.contact.id) {
           setState(() {
             pressed = false;
           });
@@ -54,7 +54,6 @@ class _ContactListEntryState extends State<ContactListEntry> {
                     pressed
                 ? null
                 : () {
-              print(widget.contact.identifier);
                     setState(() {
                       if (pressed == false) pressed = true;
                     });
@@ -86,13 +85,12 @@ class _ContactListEntryState extends State<ContactListEntry> {
             ),
             BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
               builder: (context, state) {
-
                 try {
                   final encounterType =
                       BlocProvider.of<SelectedContactsBloc>(context)
                           .contacts
                           .firstWhere((c) =>
-                              c.contact.identifier == widget.contact.identifier)
+                              c.contact.id == widget.contact.id)
                           .encounterType;
 
                   return Positioned(
@@ -143,9 +141,7 @@ class _ContactListEntryState extends State<ContactListEntry> {
                 ),
               ),
               Text(
-                widget.contact.phones.isNotEmpty
-                    ? widget.contact.phones.first.value
-                    : '',
+                widget.contact.phone,
                 style: TextStyle(
                   color: Color(0xFF2D3748).withOpacity(0.54),
                 ),
@@ -155,11 +151,10 @@ class _ContactListEntryState extends State<ContactListEntry> {
         ),
         BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
           builder: (context, state) {
-
             print('When Icon: ${widget.contact.displayName} => $state');
 
             if (BlocProvider.of<SelectedContactsBloc>(context).contacts.any(
-                (c) => c.contact.identifier == widget.contact.identifier)) {
+                (c) => c.contact.id == widget.contact.id)) {
               return Transform.rotate(
                 angle: 3 / 4.0 * pi,
                 child: IconButton(
@@ -175,9 +170,9 @@ class _ContactListEntryState extends State<ContactListEntry> {
               );
             }
 
-
             if (state is ContactRemovedState &&
-                state.contact.contact.identifier == widget.contact.identifier || returnFromEncounterTypeSelection) {
+                    state.contact.contact.id == widget.contact.id ||
+                returnFromEncounterTypeSelection) {
               returnFromEncounterTypeSelection = false;
               return TweenAnimationBuilder(
                 builder: (context, value, child) {
@@ -186,16 +181,15 @@ class _ContactListEntryState extends State<ContactListEntry> {
                     child: child,
                   );
                 },
-                tween: Tween<double>(begin: 3/4 * pi, end: 0),
+                tween: Tween<double>(begin: 3 / 4 * pi, end: 0),
                 curve: Curves.easeInOutCirc,
                 duration: Duration(milliseconds: 300),
                 child: IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: Color(0xFF718096),
-                  ),
-                  onPressed: null
-                ),
+                    icon: Icon(
+                      Icons.add,
+                      color: Color(0xFF718096),
+                    ),
+                    onPressed: null),
               );
             }
 

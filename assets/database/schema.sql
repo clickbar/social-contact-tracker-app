@@ -11,3 +11,16 @@ CREATE TABLE encounters
     contact_encounter_type  TEXT,
     encountered_at          INTEGER
 );
+
+CREATE TABLE contacts
+(
+    id                      INTEGER PRIMARY KEY NOT NULL,
+    internal_identifier     INTEGER,
+    initials                TEXT,
+    picture_path            TEXT,
+    avatar_color            INTEGER,
+    display_name            TEXT,
+    phone                   TEXT,
+    firebase_uid            INTEGER,
+    firebase_phone          TEXT
+);

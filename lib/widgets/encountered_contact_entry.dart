@@ -23,7 +23,9 @@ class EncounteredContactEntry extends StatelessWidget {
         child: Row(
           children: <Widget>[
             ContactAvatar(selectedContact.contact,
-                size: 24, radius: 8, avatarColor: selectedContact.avatarColor),
+                size: 24,
+                radius: 8,
+                avatarColor: selectedContact.contact.avatarColor),
             const SizedBox(width: 12),
             Text(selectedContact.contact.displayName),
             Spacer(),
@@ -36,7 +38,8 @@ class EncounteredContactEntry extends StatelessWidget {
               child: Text(
                 selectedContact.encounterType.toDisplayString(),
                 style: TextStyle(
-                    color: selectedContact.encounterType.toBadgeTextColorColor(),
+                    color:
+                        selectedContact.encounterType.toBadgeTextColorColor(),
                     fontSize: 11,
                     fontWeight: FontWeight.w500),
               ),

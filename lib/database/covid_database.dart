@@ -3,6 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:social_contact_tracker/model/contact.dart' as model;
 import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -24,7 +25,7 @@ class CovidDatabase {
   ///////////////////////////////////////////////////////////////////////////
 
   Future<Database> _createDatabase() async {
-    final String dbPath = join(await getDatabasesPath(), 'qs.db');
+    final String dbPath = join(await getDatabasesPath(), 'covid.db');
 
     // Open the database
     return openDatabase(
@@ -34,7 +35,7 @@ class CovidDatabase {
 
         // Load the schema from the assets and create the database
         String schemaSql =
-        await rootBundle.loadString('assets/database/schema.sql');
+            await rootBundle.loadString('assets/database/schema.sql');
         for (var command in schemaSql.split(";")) {
           if (command.length > 5) {
             // catching any hidden characters at end of schema
@@ -71,20 +72,50 @@ class CovidDatabase {
 // Store Methods
 ///////////////////////////////////////////////////////////////////////////
 
-  storeEncounter(Contact contact, String picturePath, Color avatarColor,
-      EncounterType encounterType, DateTime encounterDate) async {
+  storeEncounter(model.Contact contact, EncounterType encounterType,
+      DateTime encounterDate) async {
     final Database db = await _getDatabase();
     final insertData = {
-      'contact_identifier': contact.identifier,
-      'contact_initials': contact.initials(),
-      'contact_picture_path': picturePath,
-      'contact_avatar_color': avatarColor.value,
+      'contact_identifier': contact.internalIdentifier,
+      'contact_initials': contact.initials,
+      'contact_picture_path': contact.picturePath,
+      'contact_avatar_color': contact.avatarColor.value,
       'contact_display_name': contact.displayName,
       'contact_encounter_type': encounterType.toDatabaseString(),
       'encountered_at': encounterDate.millisecondsSinceEpoch,
     };
 
     return db.insert('encounters', insertData);
+  }
+
+  storeContact(Contact contact, String picturePath, Color avatarColor) async {
+    final Database db = await _getDatabase();
+
+    final insertData = {
+      'internal_identifier': contact.identifier,
+      'initials': contact.initials(),
+      'picture_path': picturePath,
+      'avatar_color': avatarColor.value,
+      'display_name': contact.displayName,
+      'phone': contact.phones.first.value,
+    };
+
+    return db.insert('contacts', insertData);
+  }
+
+  updateContact(Contact contact, String picturePath) async {
+    final Database db = await _getDatabase();
+
+    final updateData = {
+      'internal_identifier': contact.identifier,
+      'initials': contact.initials(),
+      'picture_path': picturePath,
+      'display_name': contact.displayName,
+      'phone': contact.phones.first.value,
+    };
+
+    return db.update('contacts', updateData,
+        where: 'internal_identifier = ?', whereArgs: [contact.identifier]);
   }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -97,5 +128,20 @@ class CovidDatabase {
     return List.generate(maps.length, (i) => Encounter.fromDatabase(maps[i]));
   }
 
+  Future<model.Contact> getContactForIdentifier(String identifier) async {
+    final Database db = await _getDatabase();
+    final maps = await db.query('contacts',
+        where: 'internal_identifier = ?', whereArgs: [identifier]);
+    if (maps.isEmpty) {
+      return null;
+    }
+    return model.Contact.fromDatabase(maps.first);
+  }
 
+  Future<List<model.Contact>> getContacts() async {
+    final Database db = await _getDatabase();
+    final maps = await db.query('contacts', orderBy: 'display_name');
+    return List.generate(
+        maps.length, (i) => model.Contact.fromDatabase(maps[i]));
+  }
 }

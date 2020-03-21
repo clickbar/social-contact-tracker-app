@@ -1,5 +1,7 @@
-import 'package:contacts_service/contacts_service.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:social_contact_tracker/model/contact.dart';
 
 class ContactAvatar extends StatelessWidget {
   final Contact contact;
@@ -16,11 +18,11 @@ class ContactAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return contact.avatar != null && contact.avatar.isNotEmpty
+    return contact.hasPicture
         ? ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
-            child: Image.memory(
-              contact.avatar,
+            child: Image.file(
+              File(contact.picturePath),
               width: size,
               height: size,
             ))
@@ -33,7 +35,7 @@ class ContactAvatar extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                contact.initials(),
+                contact.initials,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: size / 2.33,
