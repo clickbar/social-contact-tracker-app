@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/contact_list_entry.dart';
+import 'package:social_contact_tracker/widgets/encounter_bottom_sheet_title.dart';
 import 'package:social_contact_tracker/widgets/flat_round_icon_button.dart';
 import 'package:social_contact_tracker/widgets/met_contact_entry.dart';
 
@@ -146,89 +147,72 @@ class ContactSearchScreen extends StatelessWidget {
                       topRight: Radius.circular(20),
                     ),
                     type: MaterialType.card,
-                    child: Stack(
-                      children: <Widget>[
-                        CustomScrollView(
-                          controller: myscrollController,
-                          slivers: <Widget>[
-                            SliverToBoxAdapter(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                                child: Text(
-                                  'Begegnungen',
-                                  style: TextStyle(
-                                    color: Color(0xFF2D3748),
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            BlocConsumer<SelectedContactsBloc,
-                                SelectedContactsState>(
-                              buildWhen: (s1, s2) =>
-                                  s2 is NoContactsSelectedState ||
-                                  s2 is ContactsSelectedState,
-                              builder: (context, state) {
-                                if (state is ContactsSelectedState) {
-                                  return SliverAnimatedList(
-                                    key: _listKey,
-                                    initialItemCount: 0,
-                                    itemBuilder: (context, index, animation) {
-                                      return MetContactEntry(
-                                        state.contacts[index],
-                                        animation: animation,
-                                      );
-                                    },
-                                  );
-                                }
-
-                                return SliverToBoxAdapter(
-                                  child: Text(
-                                    'Kontakte die du auswählst werden hier angezeigt',
-                                    style: TextStyle(
-                                        color: Color(0xFFAFAFAF),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                    child: CustomScrollView(
+                      controller: myscrollController,
+                      slivers: <Widget>[
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: EncounterBottomSheetTitle(),
+                        ),
+                        BlocBuilder<SelectedContactsBloc,
+                            SelectedContactsState>(
+                          condition: (s1, s2) =>
+                              s2 is NoContactsSelectedState ||
+                              s2 is ContactsSelectedState,
+                          builder: (context, state) {
+                            return SliverToBoxAdapter(
+                              child: state is! NoContactsSelectedState
+                                  ? Container()
+                                  : Padding(
+                                      padding: EdgeInsets.only(top: 24),
+                                      child: Center(
+                                        child: Text(
+                                          'Kontakte, die du auswählst werden hier\nangezeigt',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Color(0xFFAFAFAF),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                            );
+                          },
+                        ),
+                        SliverAnimatedList(
+                          key: _listKey,
+                          initialItemCount: 0,
+                          itemBuilder: (context, index, animation) {
+                            return MetContactEntry(
+                              BlocProvider.of<SelectedContactsBloc>(context)
+                                  .contacts[index],
+                              animation: animation,
+                            );
+                          },
+                        ),
+                        BlocListener<SelectedContactsBloc,
+                            SelectedContactsState>(
+                          condition: (s1, s2) =>
+                              s2 is ContactInsertState ||
+                              s2 is ContactRemovedState,
+                          listener: (context, state) {
+                            if (state is ContactInsertState) {
+                              _listKey.currentState.insertItem(state.index);
+                            }
+                            if (state is ContactRemovedState) {
+                              _listKey.currentState.removeItem(state.index,
+                                  (context, animation) {
+                                return MetContactEntry(
+                                  state.contact,
+                                  animation: animation,
                                 );
-                              },
-                              listenWhen: (s1, s2) =>
-                                  s2 is ContactInsertState ||
-                                  s2 is ContactRemovedState,
-                              listener: (context, state) {
-                                if (state is ContactInsertState) {
-                                  _listKey.currentState.insertItem(state.index);
-                                }
-                                if (state is ContactRemovedState) {
-                                  _listKey.currentState.removeItem(state.index,
-                                      (context, animation) {
-                                    return MetContactEntry(
-                                      state.contact,
-                                      animation: animation,
-                                    );
-                                  });
-                                }
-                              },
-                            )
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 16.0, bottom: 24.0),
-                            child: FlatRoundIconButton(
-                              child: Text('Hinzufügen'),
-                              endIcon: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
-                              onTap: () {},
-                            ),
+                              });
+                            }
+                          },
+                          child: SliverToBoxAdapter(
+                            child: Container(),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   );

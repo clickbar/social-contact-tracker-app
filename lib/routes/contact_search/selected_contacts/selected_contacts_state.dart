@@ -6,25 +6,17 @@ abstract class SelectedContactsState {}
 
 class NoContactsSelectedState extends SelectedContactsState {}
 
-class ContactsAvailableState extends SelectedContactsState {
-  final List<SelectedContact> contacts;
+class ContactsSelectedState extends SelectedContactsState {}
 
-  ContactsAvailableState(this.contacts);
-}
-
-class ContactsSelectedState extends ContactsAvailableState {
-  ContactsSelectedState(List<SelectedContact> contacts) : super(contacts);
-}
-
-class ContactInsertState extends ContactsAvailableState {
+class ContactInsertState extends SelectedContactsState {
   final int index;
 
-  ContactInsertState(this.index, contacts) : super(contacts);
+  ContactInsertState(this.index);
 }
 
-class ContactRemovedState extends ContactsAvailableState {
+class ContactRemovedState extends SelectedContactsState {
   final int index;
   final SelectedContact contact;
 
-  ContactRemovedState(this.index, this.contact, contacts) : super(contacts);
+  ContactRemovedState(this.index, this.contact);
 }

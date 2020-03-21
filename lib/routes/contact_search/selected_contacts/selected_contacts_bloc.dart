@@ -12,41 +12,33 @@ part 'selected_contacts_state.dart';
 
 class SelectedContactsBloc
     extends Bloc<SelectedContactsEvent, SelectedContactsState> {
+  final List<SelectedContact> contacts = [];
+
   @override
   SelectedContactsState get initialState => NoContactsSelectedState();
-
-  ContactsAvailableState get _contactsAvailableState =>
-      state as ContactsAvailableState;
 
   @override
   Stream<SelectedContactsState> mapEventToState(
       SelectedContactsEvent event) async* {
     if (event is SelectContactEvent) {
-      if (state is NoContactsSelectedState) {
-        final contacts = [
-          SelectedContact(event.contact, event.contactType, event.avatarColor)
-        ];
-        yield ContactsSelectedState(contacts);
-        await Future.delayed(Duration(milliseconds: 300));
-        yield ContactInsertState(0, contacts);
-      } else {
-        final contacts = List.of(_contactsAvailableState.contacts);
-        contacts.add(SelectedContact(
-            event.contact, event.contactType, event.avatarColor));
-        yield ContactsSelectedState(contacts);
-        await Future.delayed(Duration(milliseconds: 300));
-        yield ContactInsertState(contacts.length - 1, contacts);
+      if (contacts.isEmpty) {
+        yield ContactsSelectedState();
       }
+
+      contacts.add(
+          SelectedContact(event.contact, event.contactType, event.avatarColor));
+      yield ContactInsertState(contacts.length - 1);
     }
 
     if (event is RemoveContactEvent) {
-      final contacts = List.of(_contactsAvailableState.contacts);
       final removeIndex = contacts
           .indexWhere((c) => c.contact.identifier == event.contact.identifier);
       final removedContact = contacts.removeAt(removeIndex);
-      yield ContactsSelectedState(contacts);
-      await Future.delayed(Duration(milliseconds: 300));
-      yield ContactRemovedState(removeIndex, removedContact, contacts);
+      yield ContactRemovedState(removeIndex, removedContact);
+
+      if (contacts.isEmpty) {
+        yield NoContactsSelectedState();
+      }
     }
   }
 }

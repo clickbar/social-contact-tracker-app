@@ -52,11 +52,62 @@ class _ContactListEntryState extends State<ContactListEntry> {
   }
 
   _getContactWidgets() => [
-        ContactAvatar(
-          widget.contact,
-          size: 42,
-          radius: 10,
-          avatarColor: widget.avatarColor,
+        Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            ContactAvatar(
+              widget.contact,
+              size: 42,
+              radius: 10,
+              avatarColor: widget.avatarColor,
+            ),
+            BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
+              builder: (context, state) {
+                print('Rebuild: ${widget.contact.displayName} => $state');
+
+                try {
+                  final contactType =
+                      BlocProvider.of<SelectedContactsBloc>(context)
+                          .contacts
+                          .firstWhere((c) =>
+                              c.contact.identifier == widget.contact.identifier)
+                          .contactType;
+
+                  return Positioned(
+                    bottom: -6,
+                    right: -6,
+                    child: TweenAnimationBuilder(
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: child,
+                        );
+                      },
+                      tween: Tween<double>(begin: 0.0, end: 1.0),
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOutCirc,
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: contactType.toBadgeBackgroundColor(),
+                          border: Border.all(color: Colors.white),
+                        ),
+                        child: Icon(
+                          Icons.done,
+                          color: contactType.toBadgeTextColorColor(),
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                  );
+                } catch (e, s) {
+                  return Container(width: 0, height: 0);
+                }
+              },
+            ),
+          ],
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -80,12 +131,30 @@ class _ContactListEntryState extends State<ContactListEntry> {
             ],
           ),
         ),
-        IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Color(0xFF718096),
-          ),
-          onPressed: null,
+        BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
+          builder: (context, state) {
+            if (BlocProvider.of<SelectedContactsBloc>(context).contacts.any(
+                (c) => c.contact.identifier == widget.contact.identifier)) {
+              return IconButton(
+                icon: Icon(
+                  Icons.clear,
+                  color: Color(0xFF718096),
+                ),
+                onPressed: () {
+                  BlocProvider.of<SelectedContactsBloc>(context)
+                      .add(RemoveContactEvent(widget.contact));
+                },
+              );
+            }
+
+            return IconButton(
+              icon: Icon(
+                Icons.add,
+                color: Color(0xFF718096),
+              ),
+              onPressed: null,
+            );
+          },
         )
       ];
 
@@ -151,8 +220,11 @@ class _ContactListEntryState extends State<ContactListEntry> {
       color: contactType.toBadgeBackgroundColor(),
       child: InkWell(
         onTap: () {
-          BlocProvider.of<SelectedContactsBloc>(context)
-              .add(SelectContactEvent(widget.contact, contactType, widget.avatarColor));
+          BlocProvider.of<SelectedContactsBloc>(context).add(SelectContactEvent(
+              widget.contact, contactType, widget.avatarColor));
+          setState(() {
+            pressed = false;
+          });
         },
         borderRadius: BorderRadius.all(Radius.circular(10)),
         child: Container(
