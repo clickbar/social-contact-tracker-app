@@ -147,7 +147,7 @@ class _CovidStatusSetupScreenState extends State<CovidStatusSetupScreen> {
 
   _onContinueWithCovidStatus()  async {
     await CovidDatabase().updateCurrentCovidStatus(_covidStatus);
-    Navigator.of(context).pushReplacementNamed('/encounter');
+    Navigator.of(context).pushReplacementNamed('/setupSync');
   }
 
 

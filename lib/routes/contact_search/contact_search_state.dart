@@ -15,3 +15,4 @@ class ContactsLoadedState extends ContactSearchState {
 }
 
 class ContactPermissionDeniedState extends ContactSearchState {}
+

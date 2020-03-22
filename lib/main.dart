@@ -12,6 +12,7 @@ import 'package:social_contact_tracker/routes/contact_search/contact_search_scre
 import 'package:social_contact_tracker/routes/contact_selection/contact_selection_list_screen.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_screen.dart';
 import 'package:social_contact_tracker/routes/profile/profile_screen.dart';
+import 'package:social_contact_tracker/routes/setup/contact_sync_setup_screen.dart';
 import 'package:social_contact_tracker/routes/setup/covid_status_setup_screen.dart';
 import 'package:social_contact_tracker/routes/setup/name_setup_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/phone_input_screen.dart';
@@ -133,6 +134,7 @@ class _MyAppState extends State<MyApp> {
           '/smscode': (_) => VerificationCodeInputScreen(),
           '/encounter': (_) => EncounterTimelineScreen(),
           '/setupName': (_) => NameSetupScreen(),
+          '/setupSync': (_) => ContactSyncSetupScreen(),
           '/addEncounters': (_) => ContactSearchScreen(),
           '/profile': (_) => ProfileScreen(),
         },
