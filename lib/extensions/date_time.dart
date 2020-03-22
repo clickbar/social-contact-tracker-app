@@ -1,13 +1,16 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeExtensions on DateTime {
-
   static final _SHORT_DATE_FORMAT = DateFormat('dd.MM.yyyy');
 
   String toShortDateFormat() => _SHORT_DATE_FORMAT.format(this);
 
   String toDisplayDate() {
-    final dayDifference = DateTime.now().difference(this).inDays;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final compare = DateTime(this.year, this.month, this.day);
+
+    final dayDifference = today.difference(compare).inDays;
 
     if (dayDifference == 0) {
       return 'Heute';
