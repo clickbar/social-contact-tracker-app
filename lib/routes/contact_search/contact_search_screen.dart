@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_encounter_search_widget.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_bloc.dart';
+import 'package:social_contact_tracker/routes/contact_search/encounter_date_selection/encounter_date_selection_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/change_status_bar_icon_brightness.dart';
 import 'package:social_contact_tracker/widgets/encounterable_contact_list_entry.dart';
@@ -15,13 +16,18 @@ class ContactSearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final encounterDateSelectionBloc = EncounterDateSelectionBloc();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ContactSearchBloc>(
           create: (_) => ContactSearchBloc()..add(LoadContactsEvent()),
         ),
         BlocProvider<SelectedContactsBloc>(
-            create: (_) => SelectedContactsBloc()),
+            create: (_) => SelectedContactsBloc(encounterDateSelectionBloc)),
+        BlocProvider<EncounterDateSelectionBloc>(
+          create: (_) => encounterDateSelectionBloc,
+        )
       ],
       child: Builder(
         builder: (context) =>

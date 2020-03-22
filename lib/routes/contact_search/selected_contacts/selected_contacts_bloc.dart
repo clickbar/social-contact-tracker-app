@@ -7,6 +7,7 @@ import 'package:social_contact_tracker/database/covid_database.dart';
 import 'package:social_contact_tracker/model/contact.dart';
 import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:social_contact_tracker/model/selected_contact.dart';
+import 'package:social_contact_tracker/routes/contact_search/encounter_date_selection/encounter_date_selection_bloc.dart';
 
 part 'selected_contacts_event.dart';
 
@@ -15,6 +16,10 @@ part 'selected_contacts_state.dart';
 class SelectedContactsBloc
     extends Bloc<SelectedContactsEvent, SelectedContactsState> {
   final List<SelectedContact> contacts = [];
+
+  final EncounterDateSelectionBloc _encounterDateSelectionBloc;
+
+  SelectedContactsBloc(this._encounterDateSelectionBloc);
 
   @override
   SelectedContactsState get initialState => NoContactsSelectedState();
@@ -53,8 +58,10 @@ class SelectedContactsBloc
         // Loop over all contacts
         for (var selectedContact in contacts) {
           // store it into the database
-          await CovidDatabase().storeEncounter(selectedContact.contact,
-              selectedContact.encounterType, DateTime.now());
+          await CovidDatabase().storeEncounter(
+              selectedContact.contact,
+              selectedContact.encounterType,
+              _encounterDateSelectionBloc.state.dateTime);
         }
 
         print('Saved Encounters');

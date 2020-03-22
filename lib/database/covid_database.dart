@@ -179,7 +179,7 @@ class CovidDatabase {
 
   Future<List<Encounter>> getEncounters() async {
     final Database db = await _getDatabase();
-    final maps = await db.query('encounters', orderBy: 'encountered_at');
+    final maps = await db.query('encounters', orderBy: 'encountered_at DESC');
     return List.generate(maps.length, (i) => Encounter.fromDatabase(maps[i]));
   }
 
