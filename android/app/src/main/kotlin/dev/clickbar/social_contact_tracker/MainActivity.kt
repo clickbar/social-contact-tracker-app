@@ -2,10 +2,10 @@ package dev.clickbar.social_contact_tracker
 
 import android.os.Environment
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.FlutterEngine
+//import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
+//import io.flutter.plugins.GeneratedPluginRegistrant
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -18,23 +18,23 @@ class MainActivity : FlutterActivity() {
     }
 
 
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        GeneratedPluginRegistrant.registerWith(flutterEngine)
-        registerChannels(flutterEngine)
-    }
+//    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+//        //GeneratedPluginRegistrant.registerWith(flutterEngine)
+//        registerChannels(flutterEngine)
+//    }
 
-    private fun registerChannels(flutterEngine: FlutterEngine) {
-
-        MethodChannel(
-            flutterEngine.dartExecutor.binaryMessenger,
-            DATABASE_CHANNEL
-        ).setMethodCallHandler { call, result ->
-            // Note: this method is invoked on the main thread.
-            if (call.method == "export") {
-                export(call, result)
-            }
-        }
-    }
+//    private fun registerChannels(flutterEngine: FlutterEngine) {
+//
+//        MethodChannel(
+//            flutterEngine.dartExecutor.binaryMessenger,
+//            DATABASE_CHANNEL
+//        ).setMethodCallHandler { call, result ->
+//            // Note: this method is invoked on the main thread.
+//            if (call.method == "export") {
+//                export(call, result)
+//            }
+//        }
+//    }
 
     private fun export(call: MethodCall, result: MethodChannel.Result) {
 

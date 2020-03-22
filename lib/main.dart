@@ -1,9 +1,12 @@
 import 'package:contacts_service/contacts_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:social_contact_tracker/api/covid_api.dart';
+import 'package:social_contact_tracker/persistence/settings_store.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_screen.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_screen.dart';
 import 'package:social_contact_tracker/routes/profile/profile_screen.dart';
@@ -15,11 +18,69 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+    print('data received');
+    print(data);
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+
+  // Or do other work.
+}
+
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
 
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+
+    // Retrieve the firebase messaging token
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      _handleToken(token);
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(),
       child: MaterialApp(
@@ -49,7 +110,16 @@ class MyApp extends StatelessWidget {
     );
   }
 
-
+  _handleToken(String token) async {
+    //Check if token differs from the stored token
+    final oldToken = await UserStore().getSentNotificationToken();
+    if (token != oldToken) {
+      final success = await CovidApi().addNotificationToken(token);
+      if (success) {
+        UserStore().setNotificationTokenAsSent(token);
+      }
+    }
+  }
 }
 
 class HomePage extends StatefulWidget {

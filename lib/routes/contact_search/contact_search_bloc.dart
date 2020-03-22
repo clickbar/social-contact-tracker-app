@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:random_color/random_color.dart';
+import 'package:social_contact_tracker/api/covid_api.dart';
 import 'package:social_contact_tracker/database/covid_database.dart';
 import 'package:social_contact_tracker/model/contact.dart';
 
@@ -52,6 +53,8 @@ class ContactSearchBloc extends Bloc<ContactSearchEvent, ContactSearchState> {
               .where((contact) =>
                   contact.givenName != null && contact.phones.isNotEmpty)
               .toList();
+
+          print(await CovidApi().syncContacts(realContacts));
 
           // Create the directory for the avatars
           final appSupportDir = await getApplicationSupportDirectory();

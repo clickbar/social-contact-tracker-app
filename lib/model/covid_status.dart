@@ -47,4 +47,24 @@ extension CovidStatusExtension on CovidStatus {
         return 'Unbekannt';
     }
   }
+
+  String toDatabaseString() => this.toString().split('.').last;
+}
+
+CovidStatus covidStatusFromDatabaseString(String databaseString) {
+  if (databaseString == 'NO_CONTACT') {
+    return CovidStatus.NO_CONTACT;
+  }
+
+  if (databaseString == 'CONTACT_2') {
+    return CovidStatus.CONTACT_2;
+  }
+  if (databaseString == 'CONTACT_1') {
+    return CovidStatus.CONTACT_1;
+  }
+  if (databaseString == 'POSITIVE') {
+    return CovidStatus.POSITIVE;
+  }
+
+  return CovidStatus.UNKNOWN;
 }
