@@ -10,7 +10,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contact = Contact(1, '', 'AH', null, Color(0xFF123456), 'Adrian',
-        '+49 1234567', null, null);
+        '+49 1234567', null, null, null, null);
     final covidStatus = CovidStatus.NO_CONTACT;
 
     final contactForStatusShareCount = 17;

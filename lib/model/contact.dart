@@ -10,19 +10,24 @@ class Contact {
   final String phone;
   final String firebaseUid;
   final String firebasePhone;
+  final bool shareStatus;
+  final bool livingTogether;
 
   bool get hasPicture => picturePath != null;
 
   Contact(
-      this.id,
-      this.internalIdentifier,
-      this.initials,
-      this.picturePath,
-      this.avatarColor,
-      this.displayName,
-      this.phone,
-      this.firebaseUid,
-      this.firebasePhone);
+    this.id,
+    this.internalIdentifier,
+    this.initials,
+    this.picturePath,
+    this.avatarColor,
+    this.displayName,
+    this.phone,
+    this.firebaseUid,
+    this.firebasePhone,
+    this.shareStatus,
+    this.livingTogether,
+  );
 
   factory Contact.fromDatabase(Map<String, dynamic> data) => Contact(
         data['id'],
@@ -34,5 +39,7 @@ class Contact {
         data['phone'],
         data['firebase_uid'],
         data['firebase_phone'],
+        data['share_status'],
+        data['living_together'],
       );
 }

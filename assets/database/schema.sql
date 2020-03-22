@@ -22,5 +22,7 @@ CREATE TABLE contacts
     display_name            TEXT,
     phone                   TEXT,
     firebase_uid            INTEGER,
-    firebase_phone          TEXT
+    firebase_phone          TEXT,
+    share_status            INTEGER DEFAULT 0,
+    living_together         INTEGER DEFAULT 0
 );

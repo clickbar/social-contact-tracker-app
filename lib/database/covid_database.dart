@@ -118,6 +118,7 @@ class CovidDatabase {
         where: 'internal_identifier = ?', whereArgs: [contact.identifier]);
   }
 
+
 ///////////////////////////////////////////////////////////////////////////
 // Getter Methods
 ///////////////////////////////////////////////////////////////////////////
@@ -141,6 +142,30 @@ class CovidDatabase {
   Future<List<model.Contact>> getContacts() async {
     final Database db = await _getDatabase();
     final maps = await db.query('contacts', orderBy: 'display_name');
+    return List.generate(
+        maps.length, (i) => model.Contact.fromDatabase(maps[i]));
+  }
+
+  Future<List<model.Contact>> getContactsWithStatusShareEnabled() async {
+    final Database db = await _getDatabase();
+    final maps = await db.query(
+      'contacts',
+      where: 'share_status = ?',
+      whereArgs: [1],
+      orderBy: 'display_name',
+    );
+    return List.generate(
+        maps.length, (i) => model.Contact.fromDatabase(maps[i]));
+  }
+
+  Future<List<model.Contact>> getContactsLivingTogether() async {
+    final Database db = await _getDatabase();
+    final maps = await db.query(
+      'contacts',
+      where: 'living_together = ?',
+      whereArgs: [1],
+      orderBy: 'display_name',
+    );
     return List.generate(
         maps.length, (i) => model.Contact.fromDatabase(maps[i]));
   }
