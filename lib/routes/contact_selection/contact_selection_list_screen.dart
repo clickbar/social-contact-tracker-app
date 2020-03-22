@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_contact_tracker/model/contact.dart';
 import 'package:social_contact_tracker/routes/contact_selection/contact_selection/contact_selection_bloc.dart';
+import 'package:social_contact_tracker/routes/contact_selection/contact_selection_search_widget.dart';
 import 'package:social_contact_tracker/routes/contact_selection/searchable_contact_list/searchable_contact_list_bloc.dart';
 import 'package:social_contact_tracker/widgets/selectable_bottom_sheet_title.dart';
 import 'package:social_contact_tracker/widgets/selectable_contact_list_entry.dart';
@@ -44,6 +45,7 @@ class ContactSelectionListScreen extends StatelessWidget {
             }
           },
           child: Scaffold(
+            resizeToAvoidBottomPadding: false,
             backgroundColor: Color(0xFFF3F5FA),
             appBar: AppBar(
               title: Text(
@@ -64,36 +66,7 @@ class ContactSelectionListScreen extends StatelessWidget {
                 child: Container(
                   margin: const EdgeInsets.only(
                       top: 0, bottom: 16, left: 16, right: 16),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Kontakte suchen',
-                      hintStyle: TextStyle(
-                        color: Color(0xFF718096),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                      ),
-                      fillColor: Color(0xFFF3F5FA),
-                      filled: true,
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 0.0),
-                          borderRadius: const BorderRadius.all(
-                              const Radius.circular(16.0)),
-                          gapPadding: 0.0),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFF63B3ED), width: 1.0),
-                          borderRadius: const BorderRadius.all(
-                              const Radius.circular(16.0)),
-                          gapPadding: 0.0),
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 0.0),
-                          borderRadius: const BorderRadius.all(
-                              const Radius.circular(16.0)),
-                          gapPadding: 0.0),
-                    ),
-                  ),
+                  child: ContactSelectionSearchWidget(),
                 ),
               ),
             ),

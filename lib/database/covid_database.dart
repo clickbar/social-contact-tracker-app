@@ -199,6 +199,14 @@ class CovidDatabase {
         maps.length, (i) => model.Contact.fromDatabase(maps[i]));
   }
 
+  Future<List<model.Contact>> getContactsForQuery(String query) async {
+    final Database db = await _getDatabase();
+    final maps = await db.query('contacts',
+        orderBy: 'display_name', where: 'display_name LIKE "%$query%"');
+    return List.generate(
+        maps.length, (i) => model.Contact.fromDatabase(maps[i]));
+  }
+
   Future<List<model.Contact>> getContactsWithStatusShareEnabled() async {
     final Database db = await _getDatabase();
     final maps = await db.query(
