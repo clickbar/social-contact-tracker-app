@@ -48,7 +48,7 @@ class UserStore {
 
   Future<bool> isSetupCompleted() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_KEY_SETUP_COMPLETED);
+    return prefs.containsKey(_KEY_SETUP_COMPLETED);
   }
 
   Future<bool> setSetupCompleted() async {

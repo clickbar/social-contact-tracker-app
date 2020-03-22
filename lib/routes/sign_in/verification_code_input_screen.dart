@@ -41,7 +41,7 @@ class _VerificationCodeInputScreenState
     return BlocListener<SignInBloc, SignInState>(
       listener: (context, state) {
         if (state is SignInWithPhoneSuccessfulState && !state.withoutSms) {
-          Navigator.of(context).pushNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/setupName');
         }
       },
       child: Scaffold(
@@ -58,13 +58,8 @@ class _VerificationCodeInputScreenState
                     child: Hero(
                       tag: 'sign_in_logo',
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 2 / 5,
-                        height: MediaQuery.of(context).size.width * 2 / 5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF3182CE),
-                        ),
-                      ),
+                          width: MediaQuery.of(context).size.width * 2 / 5,
+                          child: Image.asset('assets/images/logbook_logo.png')),
                     ),
                   ),
                   const SizedBox(height: 64),
@@ -147,7 +142,8 @@ class _VerificationCodeInputScreenState
 
   _codeChanged() {
     if (_codeTextController.text.length == 6) {
-      print('Code complete : Bloc=${BlocProvider.of<SignInBloc>(context).hashCode}');
+      print(
+          'Code complete : Bloc=${BlocProvider.of<SignInBloc>(context).hashCode}');
       BlocProvider.of<SignInBloc>(context)
           .add(SignInWithPhoneNumberEvent(_codeTextController.text));
     }

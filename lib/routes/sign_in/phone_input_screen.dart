@@ -30,10 +30,10 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
     return BlocListener<SignInBloc, SignInState>(
       listener: (context, state) {
         if (state is PhoneCodeSentState) {
-          Navigator.of(context).pushNamed('/smscode');
+          Navigator.of(context).pushReplacementNamed('/smscode');
         }
         if (state is SignInWithPhoneSuccessfulState && state.withoutSms) {
-          Navigator.of(context).pushNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/setupName');
         }
       },
       child: Scaffold(
@@ -51,11 +51,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                       tag: 'sign_in_logo',
                       child: Container(
                         width: MediaQuery.of(context).size.width * 2 / 5,
-                        height: MediaQuery.of(context).size.width * 2 / 5,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF3182CE),
-                        ),
+                        child: Image.asset('assets/images/logbook_logo.png'),
                       ),
                     ),
                   ),
@@ -120,7 +116,8 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                       tag: 'sign_in_action_button',
                       child: FlatRoundIconButton(
                         onTap: () {
-                          print('Phone entered : Bloc=${BlocProvider.of<SignInBloc>(context).hashCode}');
+                          print(
+                              'Phone entered : Bloc=${BlocProvider.of<SignInBloc>(context).hashCode}');
                           BlocProvider.of<SignInBloc>(context).add(
                               VerifyPhoneNumberEvent(
                                   _phoneTextController.text));

@@ -6,11 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:social_contact_tracker/api/covid_api.dart';
+import 'package:social_contact_tracker/model/covid_status.dart';
 import 'package:social_contact_tracker/persistence/settings_store.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_screen.dart';
 import 'package:social_contact_tracker/routes/contact_selection/contact_selection_list_screen.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_screen.dart';
 import 'package:social_contact_tracker/routes/profile/profile_screen.dart';
+import 'package:social_contact_tracker/routes/setup/covid_status_setup_screen.dart';
+import 'package:social_contact_tracker/routes/setup/name_setup_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/phone_input_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/sign_in_bloc.dart';
 import 'package:social_contact_tracker/routes/sign_in/verification_code_input_screen.dart';
@@ -114,14 +117,22 @@ class _MyAppState extends State<MyApp> {
                           arguments['clear_stored_seletion_function'],
                     ));
           }
+
+          if (settings.name == '/setupCovidStatus') {
+            final arguments = settings.arguments as Map;
+            return MaterialPageRoute(
+                builder: (context) =>
+                    CovidStatusSetupScreen(arguments['name']));
+          }
+
           return null;
         },
         routes: {
           '/': (_) => SplashScreen(),
-          '/encounter': (_) => EncounterTimelineScreen(),
-          '/home': (_) => HomePage(),
-          '/smscode': (_) => VerificationCodeInputScreen(),
           '/signin': (_) => PhoneInputScreen(),
+          '/smscode': (_) => VerificationCodeInputScreen(),
+          '/encounter': (_) => EncounterTimelineScreen(),
+          '/setupName': (_) => NameSetupScreen(),
           '/addEncounters': (_) => ContactSearchScreen(),
           '/profile': (_) => ProfileScreen(),
         },
