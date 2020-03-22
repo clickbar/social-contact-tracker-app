@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:social_contact_tracker/api/covid_api.dart';
 import 'package:social_contact_tracker/persistence/settings_store.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_screen.dart';
+import 'package:social_contact_tracker/routes/contact_selection/contact_selection_list_screen.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_screen.dart';
 import 'package:social_contact_tracker/routes/profile/profile_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/phone_input_screen.dart';
@@ -71,7 +72,7 @@ class _MyAppState extends State<MyApp> {
     // Retrieve the firebase messaging token
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
-      _handleToken(token);
+      //_handleToken(token);
     });
   }
 
@@ -99,6 +100,21 @@ class _MyAppState extends State<MyApp> {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
+        onGenerateRoute: (settings) {
+          if (settings.name == '/contactSelection') {
+            final arguments = settings.arguments as Map;
+            return MaterialPageRoute(
+                builder: (context) => ContactSelectionListScreen(
+                      initialSelection: arguments['initial_selection'],
+                      title: arguments['title'],
+                      storeSelectionFunction:
+                          arguments['store_seletion_function'],
+                      clearStoredSelectionFunction:
+                          arguments['clear_stored_seletion_function'],
+                    ));
+          }
+          return null;
+        },
         routes: {
           '/': (_) => EncounterTimelineScreen(),
           '/home': (_) => HomePage(),

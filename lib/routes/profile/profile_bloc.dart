@@ -35,8 +35,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is UpdateCovidStatusEvent) {
       final oldState = state as ProfileLoadedState;
       yield ProfileLoadedState(
-          oldState.phoneNumber,
           oldState.name,
+          oldState.phoneNumber,
           event.covidStatus,
           oldState.statusShareContacts,
           oldState.livingWithContacts);

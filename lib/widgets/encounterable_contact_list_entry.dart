@@ -8,19 +8,19 @@ import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/contact_avatar.dart';
 
-class ContactListEntry extends StatefulWidget {
+class EncounterableContactListEntry extends StatefulWidget {
   static final RandomColor _randomColor = RandomColor();
 
   final Contact contact;
   final avatarColor = _randomColor.randomColor(colorHue: ColorHue.blue);
 
-  ContactListEntry(this.contact, {Key key}) : super(key: key);
+  EncounterableContactListEntry(this.contact, {Key key}) : super(key: key);
 
   @override
-  _ContactListEntryState createState() => _ContactListEntryState();
+  _EncounterableContactListEntryState createState() => _EncounterableContactListEntryState();
 }
 
-class _ContactListEntryState extends State<ContactListEntry> {
+class _EncounterableContactListEntryState extends State<EncounterableContactListEntry> {
   bool pressed = false;
   bool returnFromEncounterTypeSelection;
 

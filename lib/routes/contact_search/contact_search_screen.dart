@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_bloc.dart';
 import 'package:social_contact_tracker/routes/contact_search/selected_contacts/selected_contacts_bloc.dart';
 import 'package:social_contact_tracker/widgets/change_status_bar_icon_brightness.dart';
-import 'package:social_contact_tracker/widgets/contact_list_entry.dart';
+import 'package:social_contact_tracker/widgets/encounterable_contact_list_entry.dart';
 import 'package:social_contact_tracker/widgets/encounter_bottom_sheet_title.dart';
 import 'package:social_contact_tracker/widgets/encountered_contact_entry.dart';
 import 'package:social_contact_tracker/widgets/flat_round_icon_button.dart';
@@ -171,7 +171,7 @@ class ContactSearchScreen extends StatelessWidget {
                                     delegate: SliverChildBuilderDelegate(
                                       (BuildContext context, int index) {
                                         if (index.isEven) {
-                                          return ContactListEntry(
+                                          return EncounterableContactListEntry(
                                               recents[index ~/ 2]);
                                         }
                                         return const SizedBox(height: 12);
@@ -194,7 +194,7 @@ class ContactSearchScreen extends StatelessWidget {
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
                                   if (index.isEven) {
-                                    return ContactListEntry(
+                                    return EncounterableContactListEntry(
                                         state.contacts[index ~/ 2]);
                                   }
                                   return const SizedBox(height: 12);

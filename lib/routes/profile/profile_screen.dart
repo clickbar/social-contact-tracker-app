@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_contact_tracker/database/covid_database.dart';
 import 'package:social_contact_tracker/dialogs/info_dialog.dart';
 import 'package:social_contact_tracker/model/contact.dart';
 import 'package:social_contact_tracker/model/covid_status.dart';
@@ -12,9 +13,6 @@ import 'package:social_contact_tracker/extensions/list.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final contact = Contact(1, '', 'AH', null, Color(0xFF123456), 'Adrian',
-        '+49 1234567', null, null, null, null);
-
     return BlocProvider<ProfileBloc>(
       create: (_) => ProfileBloc()..add(LoadProfileEvent()),
       child: Builder(
@@ -32,16 +30,19 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  ContactAvatar(
-                    contact,
-                    size: 84,
-                    radius: 24,
+                  Container(
+                    width: 84,
+                    height: 84,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF3182CE),
+                      borderRadius: BorderRadius.all(Radius.circular(24)),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   BlocBuilder<ProfileBloc, ProfileState>(
                     builder: (context, state) {
                       if (state is ProfileLoadedState) {
-                        return Text('Gude ${contact.displayName}',
+                        return Text('Gude ${state.name}',
                             style: TextStyle(
                                 color: Color(0xFF2D3748),
                                 fontSize: 28,
@@ -283,7 +284,8 @@ class ProfileScreen extends StatelessWidget {
                                 alignment: Alignment.bottomRight,
                                 child: FlatRoundIconButton(
                                   child: Text('Liste bearbeiten'),
-                                  onTap: () {},
+                                  onTap: () => _editSharedContactsPressed(
+                                      context, state.statusShareContacts),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 18, vertical: 10),
                                 ),
@@ -347,7 +349,8 @@ class ProfileScreen extends StatelessWidget {
                                 alignment: Alignment.bottomRight,
                                 child: FlatRoundIconButton(
                                   child: Text('Haushalt bearbeiten'),
-                                  onTap: () {},
+                                  onTap: () => _editLivingTogetherPressed(
+                                      context, state.livingWithContacts),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 18, vertical: 10),
                                 ),
@@ -383,8 +386,48 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
 
-    if(newCovidStatus != null &&  newCovidStatus != currentCovidStatus){
-      BlocProvider.of<ProfileBloc>(context).add(UpdateCovidStatusEvent(newCovidStatus));
+    if (newCovidStatus != null && newCovidStatus != currentCovidStatus) {
+      BlocProvider.of<ProfileBloc>(context)
+          .add(UpdateCovidStatusEvent(newCovidStatus));
+    }
+  }
+
+  _editSharedContactsPressed(
+      BuildContext context, List<Contact> initialSelection) {
+    _showContactSelection(
+        context,
+        initialSelection,
+        'Share With',
+        (Contact c) => CovidDatabase().storeShareStatusFor(c),
+        () => CovidDatabase().clearStoredShareStatusSelection());
+  }
+
+  _editLivingTogetherPressed(
+      BuildContext context, List<Contact> initialSelection) {
+    _showContactSelection(
+        context,
+        initialSelection,
+        'Haushalt wählen',
+        (Contact c) => CovidDatabase().storeLivingTogetherFor(c),
+        () => CovidDatabase().clearStoredLivingTogetherSelection());
+  }
+
+  _showContactSelection(
+      BuildContext context,
+      List<Contact> initialSelection,
+      String title,
+      Future Function(Contact) storeSelectionFunction,
+      Future Function() clearStoredSelectionFunction) async {
+    final response =
+        await Navigator.of(context).pushNamed('/contactSelection', arguments: {
+      'initial_selection': initialSelection,
+      'title': title,
+      'store_seletion_function': storeSelectionFunction,
+      'clear_stored_seletion_function': clearStoredSelectionFunction,
+    });
+
+    if (response != null && response) {
+      BlocProvider.of<ProfileBloc>(context).add(LoadProfileEvent());
     }
   }
 }

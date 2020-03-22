@@ -39,7 +39,12 @@ class Contact {
         data['phone'],
         data['firebase_uid'],
         data['firebase_phone'],
-        data['share_status'],
-        data['living_together'],
+        data['share_status'] == 1,
+        data['living_together'] == 1,
       );
+
+  @override
+  String toString() {
+    return 'Contact{id: $id, internalIdentifier: $internalIdentifier, initials: $initials, picturePath: $picturePath, avatarColor: $avatarColor, displayName: $displayName, phone: $phone, firebaseUid: $firebaseUid, firebasePhone: $firebasePhone, shareStatus: $shareStatus, livingTogether: $livingTogether}';
+  }
 }

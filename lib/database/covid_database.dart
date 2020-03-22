@@ -123,11 +123,53 @@ class CovidDatabase {
     final Database db = await _getDatabase();
 
     final insertData = {
-      'covid_status': covidStatus,
-      'updated_at': DateTime.now(),
+      'covid_status': covidStatus.toDatabaseString(),
+      'updated_at': DateTime.now().millisecondsSinceEpoch,
     };
 
-    return db.insert('contacts', insertData);
+    return db.insert('covid_states', insertData);
+  }
+
+  Future clearStoredLivingTogetherSelection() async {
+    final Database db = await _getDatabase();
+
+    final updateData = {
+      'living_together': 0,
+    };
+
+    return db.update('contacts', updateData);
+  }
+
+  Future storeLivingTogetherFor(model.Contact contact) async {
+    print('DB Update For: $contact');
+    final Database db = await _getDatabase();
+    final updateData = {
+      'living_together': 1,
+    };
+
+    return db.update('contacts', updateData,
+        where: 'id = ?', whereArgs: [contact.id]);
+  }
+
+  Future clearStoredShareStatusSelection() async {
+    final Database db = await _getDatabase();
+
+    final updateData = {
+      'share_status': 0,
+    };
+
+    return db.update('contacts', updateData);
+  }
+
+  Future storeShareStatusFor(model.Contact contact) async {
+    print('DB Update For: $contact');
+    final Database db = await _getDatabase();
+    final updateData = {
+      'share_status': 1,
+    };
+
+    return db.update('contacts', updateData,
+        where: 'id = ?', whereArgs: [contact.id]);
   }
 
 ///////////////////////////////////////////////////////////////////////////
