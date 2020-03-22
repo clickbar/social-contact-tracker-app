@@ -31,12 +31,9 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Container(
-                    width: 84,
+                    width: 120,
                     height: 84,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF3182CE),
-                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                    ),
+                    child: Image.asset('assets/images/logbook_logo.png'),
                   ),
                   const SizedBox(height: 16),
                   BlocBuilder<ProfileBloc, ProfileState>(
