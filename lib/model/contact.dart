@@ -2,7 +2,7 @@ import 'dart:ui';
 
 class Contact {
   final int id;
-  final int internalIdentifier;
+  final String internalIdentifier;
   final String initials;
   final String picturePath;
   final Color avatarColor;
@@ -26,7 +26,7 @@ class Contact {
 
   factory Contact.fromDatabase(Map<String, dynamic> data) => Contact(
         data['id'],
-        data['internal_identifier'],
+        data['internal_identifier'].toString(),
         data['initials'],
         data['picture_path'],
         Color(data['avatar_color']),

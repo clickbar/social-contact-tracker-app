@@ -4,6 +4,7 @@ import 'package:social_contact_tracker/model/encountered_contact.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_bloc.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encountered_contact_entry_widget.dart';
 import 'package:social_contact_tracker/extensions/date_time.dart';
+import 'package:social_contact_tracker/widgets/info_dialog.dart';
 
 class EncounterTimelineScreen extends StatelessWidget {
   @override
@@ -92,7 +93,11 @@ class EncounterTimelineScreen extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => InfoDialog());
+                              },
                               child: Container(
                                 height: double.infinity,
                                 width: 80,
