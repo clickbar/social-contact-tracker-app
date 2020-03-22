@@ -22,10 +22,7 @@ class EncounteredContactEntry extends StatelessWidget {
         margin: const EdgeInsets.only(left: 16),
         child: Row(
           children: <Widget>[
-            ContactAvatar(selectedContact.contact,
-                size: 24,
-                radius: 8,
-                avatarColor: selectedContact.contact.avatarColor),
+            ContactAvatar(selectedContact.contact, size: 24, radius: 8),
             const SizedBox(width: 12),
             Text(selectedContact.contact.displayName),
             Spacer(),

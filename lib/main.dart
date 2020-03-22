@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:social_contact_tracker/routes/contact_search/contact_search_screen.dart';
 import 'package:social_contact_tracker/routes/encounter_timeline/encounter_timeline_screen.dart';
+import 'package:social_contact_tracker/routes/profile/profile_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/phone_input_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/sign_in_bloc.dart';
 import 'package:social_contact_tracker/routes/sign_in/verification_code_input_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           '/home': (_) => HomePage(),
           '/smscode': (_) => VerificationCodeInputScreen(),
           '/addEncounters': (_) => ContactSearchScreen(),
+          '/profile': (_) => ProfileScreen(),
         },
         initialRoute: '/',
       ),

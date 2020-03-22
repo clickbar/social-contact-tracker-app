@@ -81,7 +81,6 @@ class _ContactListEntryState extends State<ContactListEntry> {
               widget.contact,
               size: 42,
               radius: 10,
-              avatarColor: widget.avatarColor,
             ),
             BlocBuilder<SelectedContactsBloc, SelectedContactsState>(
               builder: (context, state) {

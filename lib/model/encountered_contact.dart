@@ -38,7 +38,7 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Alexander Agasiev',
       EncounterType.DIRECT,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
   EncounteredContact(
       '3037',
@@ -47,7 +47,7 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Peter Pan',
       EncounterType.TWO_METERS,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
   EncounteredContact(
       '3037',
@@ -56,7 +56,7 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Idris Nematpur',
       EncounterType.DIRECT,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
   DateTime.now().add(Duration(days: -1)),
   EncounteredContact(
@@ -66,7 +66,7 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Alexsander Küchler',
       EncounterType.SAME_ROOM,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
   EncounteredContact(
       '3037',
@@ -75,7 +75,7 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Peter Pan',
       EncounterType.TWO_METERS,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
   DateTime.now().add(Duration(days: -2)),
   EncounteredContact(
@@ -85,7 +85,7 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Alexander Agasiev',
       EncounterType.SAME_ROOM,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
   EncounteredContact(
       '3037',
@@ -94,6 +94,6 @@ final kDemoEncounteredContacts = [
       randomColor.randomColor(colorHue: ColorHue.blue),
       'Idris Nematpur',
       EncounterType.DIRECT,
-      CovidStatus.HEALTHY,
+      CovidStatus.NO_CONTACT,
       DateTime.now()),
 ];

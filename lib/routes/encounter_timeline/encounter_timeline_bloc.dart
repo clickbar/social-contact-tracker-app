@@ -39,7 +39,7 @@ class EncounterTimelineBloc
             encounter.avatarColor,
             encounter.contactDisplayName,
             encounter.encounterType,
-            CovidStatus.HEALTHY,
+            CovidStatus.NO_CONTACT,
             DateTime.now()));
       }
 

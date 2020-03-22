@@ -7,14 +7,13 @@ class ContactAvatar extends StatelessWidget {
   final Contact contact;
   final double size;
   final double radius;
-  final Color avatarColor;
 
-  const ContactAvatar(this.contact,
-      {Key key,
-      @required this.size,
-      @required this.radius,
-      @required this.avatarColor})
-      : super(key: key);
+  const ContactAvatar(
+    this.contact, {
+    Key key,
+    @required this.size,
+    @required this.radius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class ContactAvatar extends StatelessWidget {
             width: size,
             height: size,
             decoration: BoxDecoration(
-              color: avatarColor,
+              color: contact.avatarColor,
               borderRadius: BorderRadius.all(Radius.circular(radius)),
             ),
             child: Center(

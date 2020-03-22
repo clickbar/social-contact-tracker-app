@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:social_contact_tracker/model/covid_status.dart';
 
 class InfoDialog extends StatelessWidget {
+  final bool onlyCovidStatus;
+
+  const InfoDialog({Key key, this.onlyCovidStatus = false}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final headlineTextStyle = TextStyle(
@@ -51,26 +56,28 @@ class InfoDialog extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Text(
-                    'Wieso diese App?',
-                    style: headlineTextStyle,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Du erkrankst an Covid19 und möchtest die Kontaktpersonen der letzten Tage natürlich darüber informieren.',
-                    style: contentTextStyle,
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Datenschutz?',
-                    style: headlineTextStyle,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Deine Begegnungen werde nur auf deinem Gerät gespeichert und werden nie versendet.\n\nBei deinem Status kannst du auswählen, mit wem du ihn teilen möchtest.',
-                    style: contentTextStyle,
-                  ),
-                  const SizedBox(height: 24),
+                  if (!onlyCovidStatus) ...[
+                    Text(
+                      'Wieso diese App?',
+                      style: headlineTextStyle,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Du erkrankst an Covid19 und möchtest die Kontaktpersonen der letzten Tage natürlich darüber informieren.',
+                      style: contentTextStyle,
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Datenschutz?',
+                      style: headlineTextStyle,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Deine Begegnungen werde nur auf deinem Gerät gespeichert und werden nie versendet.\n\nBei deinem Status kannst du auswählen, mit wem du ihn teilen möchtest.',
+                      style: contentTextStyle,
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                   Text(
                     'Was ist ein Covid Status?',
                     style: headlineTextStyle,
@@ -87,13 +94,14 @@ class InfoDialog extends StatelessWidget {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                            color: Color(0xFF48BB78), shape: BoxShape.circle),
+                            color: CovidStatus.NO_CONTACT.toBackgroundColor(),
+                            shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Keine Kontaktperson',
+                        CovidStatus.NO_CONTACT.toDispalyText(),
                         style: TextStyle(
-                            color: Color(0xFF2F855A),
+                            color: CovidStatus.NO_CONTACT.toTextColor(),
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
@@ -111,13 +119,14 @@ class InfoDialog extends StatelessWidget {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                            color: Color(0xFFECC94B), shape: BoxShape.circle),
+                            color: CovidStatus.CONTACT_2.toBackgroundColor(),
+                            shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Kontaktperson Stufe I',
+                        CovidStatus.CONTACT_2.toDispalyText(),
                         style: TextStyle(
-                            color: Color(0xFFB7791F),
+                            color: CovidStatus.CONTACT_2.toTextColor(),
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
@@ -135,13 +144,14 @@ class InfoDialog extends StatelessWidget {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                            color: Color(0xFFED8936), shape: BoxShape.circle),
+                            color: CovidStatus.CONTACT_1.toBackgroundColor(),
+                            shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Kontaktperson Stufe II',
+                        CovidStatus.CONTACT_1.toDispalyText(),
                         style: TextStyle(
-                            color: Color(0xFFC05621),
+                            color: CovidStatus.CONTACT_1.toTextColor(),
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
@@ -159,13 +169,14 @@ class InfoDialog extends StatelessWidget {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                            color: Color(0xFFF56565), shape: BoxShape.circle),
+                            color: CovidStatus.POSITIVE.toBackgroundColor(),
+                            shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'COVID19 Positiv',
+                        CovidStatus.POSITIVE.toDispalyText(),
                         style: TextStyle(
-                            color: Color(0xFFC53030),
+                            color: CovidStatus.POSITIVE.toTextColor(),
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
