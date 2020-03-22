@@ -10,6 +10,7 @@ import 'package:random_color/random_color.dart';
 import 'package:social_contact_tracker/api/covid_api.dart';
 import 'package:social_contact_tracker/database/covid_database.dart';
 import 'package:social_contact_tracker/model/contact.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'contact_search_event.dart';
 
@@ -20,6 +21,18 @@ class ContactSearchBloc extends Bloc<ContactSearchEvent, ContactSearchState> {
 
   @override
   ContactSearchState get initialState => InitialContactSearchState();
+
+  @override
+  Stream<ContactSearchState> transformEvents(Stream<ContactSearchEvent> events,
+      Stream<ContactSearchState> Function(ContactSearchEvent p1) next) {
+    return super.transformEvents(
+        events.debounce((event) => TimerStream(
+            true,
+            event is SearchQueryChangedEvent
+                ? Duration(milliseconds: 300)
+                : Duration.zero)),
+        next);
+  }
 
   @override
   Stream<ContactSearchState> mapEventToState(ContactSearchEvent event) async* {
@@ -37,11 +50,13 @@ class ContactSearchBloc extends Bloc<ContactSearchEvent, ContactSearchState> {
           // Load the contacts from the database first
           final List<Contact> cachedContacts =
               await CovidDatabase().getContacts();
+          final contactsMostEncountered =
+              await CovidDatabase().getContactsMostEncountered();
 
           // Check if there are cached contacts
           if (cachedContacts.isNotEmpty) {
             // --> yield id
-            yield ContactsLoadedState(cachedContacts);
+            yield ContactsLoadedState(cachedContacts, contactsMostEncountered);
           } else {
             firstLoad = true;
           }
@@ -54,7 +69,7 @@ class ContactSearchBloc extends Bloc<ContactSearchEvent, ContactSearchState> {
                   contact.givenName != null && contact.phones.isNotEmpty)
               .toList();
 
-          print(await CovidApi().syncContacts(realContacts));
+         // print(await CovidApi().syncContacts(realContacts));
 
           // Create the directory for the avatars
           final appSupportDir = await getApplicationSupportDirectory();
@@ -108,8 +123,10 @@ class ContactSearchBloc extends Bloc<ContactSearchEvent, ContactSearchState> {
           if (firstLoad) {
             // Cached is now available load again
             final List<Contact> cachedContacts =
-            await CovidDatabase().getContacts();
-            yield ContactsLoadedState(cachedContacts);
+                await CovidDatabase().getContacts();
+            final contactsMostEncountered =
+                await CovidDatabase().getContactsMostEncountered();
+            yield ContactsLoadedState(cachedContacts, contactsMostEncountered);
           }
         }
       }
@@ -123,6 +140,16 @@ class ContactSearchBloc extends Bloc<ContactSearchEvent, ContactSearchState> {
         } else {
           add(LoadContactsEvent());
         }
+      }
+
+      if (event is SearchQueryChangedEvent) {
+        List<Contact> contactsMostEncountered = [];
+        if (event.query.isEmpty) {
+          contactsMostEncountered =
+              await CovidDatabase().getContactsMostEncountered();
+        }
+        final contacts = await CovidDatabase().getContactsForQuery(event.query);
+        yield ContactsLoadedState(contacts, contactsMostEncountered);
       }
     } catch (e, s) {
       print(e);

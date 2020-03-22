@@ -3,6 +3,7 @@
 CREATE TABLE encounters
 (
     id                      INTEGER PRIMARY KEY NOT NULL,
+    contact_id              INTEGER,
     contact_identifier      TEXT,
     contact_initials        TEXT,
     contact_picture_path    TEXT,

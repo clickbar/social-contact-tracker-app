@@ -147,9 +147,7 @@ class EncounterTimelineScreen extends StatelessWidget {
                       child: InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         child: Icon(Icons.add, color: Colors.white),
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/addEncounters');
-                        },
+                        onTap: () => _onAddEncounterPressed(context),
                       ),
                     ),
                   ),
@@ -160,5 +158,13 @@ class EncounterTimelineScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _onAddEncounterPressed(BuildContext context) async {
+    final result = await Navigator.of(context).pushNamed('/addEncounters');
+    if (result != null && result) {
+      BlocProvider.of<EncounterTimelineBloc>(context)
+          .add(LoadEncountersEvent());
+    }
   }
 }

@@ -77,6 +77,7 @@ class CovidDatabase {
       DateTime encounterDate) async {
     final Database db = await _getDatabase();
     final insertData = {
+      'contact_id': contact.id,
       'contact_identifier': contact.internalIdentifier,
       'contact_initials': contact.initials,
       'contact_picture_path': contact.picturePath,
@@ -227,6 +228,21 @@ class CovidDatabase {
       whereArgs: [1],
       orderBy: 'display_name',
     );
+    return List.generate(
+        maps.length, (i) => model.Contact.fromDatabase(maps[i]));
+  }
+
+  Future<List<model.Contact>> getContactsMostEncountered() async {
+    final Database db = await _getDatabase();
+    final query = '''
+    SELECT contacts.*, 
+      (SELECT COUNT(*) FROM encounters WHERE contact_id = contacts.id) AS amount 
+    FROM contacts 
+    WHERE living_together = 0 
+    ORDER BY amount DESC 
+    LIMIT 3;
+    ''';
+    final maps = await db.rawQuery(query);
     return List.generate(
         maps.length, (i) => model.Contact.fromDatabase(maps[i]));
   }
