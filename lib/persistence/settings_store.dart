@@ -10,6 +10,8 @@ class UserStore {
   UserStore._internal() {}
 
   static const _KEY_SENT_NOTIFICATION_TOKEN = 'sendNotificationToken';
+  static const _KEY_PHONE_NUMBER = 'phoneNumber';
+  static const _KEY_NAME = 'name';
 
   setNotificationTokenAsSent(String notificationToken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,4 +25,23 @@ class UserStore {
         : null;
   }
 
+  setPhoneNumber(String phoneNumber) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_KEY_PHONE_NUMBER, phoneNumber);
+  }
+
+  Future<String> getPhoneNumber() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_KEY_PHONE_NUMBER);
+  }
+
+  setName(String name) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_KEY_NAME, name);
+  }
+
+  Future<String> getName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_KEY_NAME);
+  }
 }

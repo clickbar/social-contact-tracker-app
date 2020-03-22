@@ -42,12 +42,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   @override
   void initState() {
     super.initState();
-
+    testLocalStorage();
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -75,12 +73,15 @@ class _MyAppState extends State<MyApp> {
       assert(token != null);
       _handleToken(token);
     });
+  }
 
+  testLocalStorage() async {
+    UserStore().setPhoneNumber('+491605822419');
+    UserStore().setName('Adrian');
   }
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(),
       child: MaterialApp(

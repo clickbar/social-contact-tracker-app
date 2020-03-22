@@ -26,3 +26,12 @@ CREATE TABLE contacts
     share_status            INTEGER DEFAULT 0,
     living_together         INTEGER DEFAULT 0
 );
+
+CREATE TABLE covid_states
+(
+    contact_id              INTEGER,
+    covid_status            TEXT,
+    updated_at              INTEGER
+)
+
+

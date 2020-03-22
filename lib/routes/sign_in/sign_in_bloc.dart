@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:social_contact_tracker/persistence/settings_store.dart';
 
 part 'sign_in_event.dart';
 
@@ -44,6 +45,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           verificationFailed: verificationFailed,
           codeSent: codeSent,
           codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+
+      // Store the phone Number for later displaying
+      UserStore().setPhoneNumber(event.phoneNumber);
     }
 
     if (event is PhoneVerificationCompletedEvent) {
@@ -97,6 +101,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   @override
   void onTransition(Transition<SignInEvent, SignInState> transition) {
     super.onTransition(transition);
-    print('${transition.currentState} + ${transition.event} => ${transition.nextState}');
+    print(
+        '${transition.currentState} + ${transition.event} => ${transition.nextState}');
   }
 }

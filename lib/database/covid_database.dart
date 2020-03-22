@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:social_contact_tracker/model/contact.dart' as model;
+import 'package:social_contact_tracker/model/covid_status.dart';
 import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -118,6 +119,16 @@ class CovidDatabase {
         where: 'internal_identifier = ?', whereArgs: [contact.identifier]);
   }
 
+  updateCurrentCovidStatus(CovidStatus covidStatus) async {
+    final Database db = await _getDatabase();
+
+    final insertData = {
+      'covid_status': covidStatus,
+      'updated_at': DateTime.now(),
+    };
+
+    return db.insert('contacts', insertData);
+  }
 
 ///////////////////////////////////////////////////////////////////////////
 // Getter Methods
@@ -168,5 +179,15 @@ class CovidDatabase {
     );
     return List.generate(
         maps.length, (i) => model.Contact.fromDatabase(maps[i]));
+  }
+
+  Future<CovidStatus> getCurrentCovidStatus() async {
+    final Database db = await _getDatabase();
+    final maps = await db.query('covid_states',
+        where: 'contact_id IS NULL', orderBy: 'updated_at DESC', limit: 1);
+    if (maps.isEmpty) {
+      return null;
+    }
+    return covidStatusFromDatabaseString(maps.first['covid_status']);
   }
 }
