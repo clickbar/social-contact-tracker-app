@@ -12,6 +12,7 @@ class UserStore {
   static const _KEY_SENT_NOTIFICATION_TOKEN = 'sendNotificationToken';
   static const _KEY_PHONE_NUMBER = 'phoneNumber';
   static const _KEY_NAME = 'name';
+  static const _KEY_SETUP_COMPLETED = 'setupComplete';
 
   setNotificationTokenAsSent(String notificationToken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -43,5 +44,15 @@ class UserStore {
   Future<String> getName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_KEY_NAME);
+  }
+
+  Future<bool> isSetupCompleted() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_KEY_SETUP_COMPLETED);
+  }
+
+  Future<bool> setSetupCompleted() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool(_KEY_SETUP_COMPLETED, true);
   }
 }

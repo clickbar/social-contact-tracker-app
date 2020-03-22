@@ -14,6 +14,7 @@ import 'package:social_contact_tracker/routes/profile/profile_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/phone_input_screen.dart';
 import 'package:social_contact_tracker/routes/sign_in/sign_in_bloc.dart';
 import 'package:social_contact_tracker/routes/sign_in/verification_code_input_screen.dart';
+import 'package:social_contact_tracker/routes/splash/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -72,12 +73,12 @@ class _MyAppState extends State<MyApp> {
     // Retrieve the firebase messaging token
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
-      //_handleToken(token);
+      _handleToken(token);
     });
   }
 
   testLocalStorage() async {
-    UserStore().setPhoneNumber('+491605822419');
+    //UserStore().setPhoneNumber('+491605822419');
     UserStore().setName('Adrian');
   }
 
@@ -116,9 +117,11 @@ class _MyAppState extends State<MyApp> {
           return null;
         },
         routes: {
-          '/': (_) => EncounterTimelineScreen(),
+          '/': (_) => SplashScreen(),
+          '/encounter': (_) => EncounterTimelineScreen(),
           '/home': (_) => HomePage(),
           '/smscode': (_) => VerificationCodeInputScreen(),
+          '/signin': (_) => PhoneInputScreen(),
           '/addEncounters': (_) => ContactSearchScreen(),
           '/profile': (_) => ProfileScreen(),
         },
