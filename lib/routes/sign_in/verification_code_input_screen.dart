@@ -77,7 +77,7 @@ class _VerificationCodeInputScreenState
                   ),
                   const SizedBox(height: 40),
                   SizedBox(
-                    width: 6 * 34.0,
+                    width: 6 * 35.0,
                     child: WithMaterialHero(
                       tag: 'sign_in_textfield',
                       child: TextField(
