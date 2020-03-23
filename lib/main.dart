@@ -51,7 +51,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    testLocalStorage();
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -81,10 +80,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  testLocalStorage() async {
-    //UserStore().setPhoneNumber('+491605822419');
-    UserStore().setName('Adrian');
-  }
 
   @override
   Widget build(BuildContext context) {
