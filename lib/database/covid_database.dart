@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:social_contact_tracker/model/contact.dart' as model;
 import 'package:social_contact_tracker/model/covid_status.dart';
+import 'package:social_contact_tracker/model/covid_status_update.dart';
 import 'package:social_contact_tracker/model/encounter_type.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -124,6 +125,19 @@ class CovidDatabase {
     final Database db = await _getDatabase();
 
     final insertData = {
+      'covid_status': covidStatus.toDatabaseString(),
+      'updated_at': DateTime.now().millisecondsSinceEpoch,
+    };
+
+    return db.insert('covid_states', insertData);
+  }
+
+  storeCovidStatusUpdateFor(
+      model.Contact contact, CovidStatus covidStatus) async {
+    final Database db = await _getDatabase();
+
+    final insertData = {
+      'contact_id': contact.internalIdentifier,
       'covid_status': covidStatus.toDatabaseString(),
       'updated_at': DateTime.now().millisecondsSinceEpoch,
     };
@@ -255,5 +269,16 @@ class CovidDatabase {
       return null;
     }
     return covidStatusFromDatabaseString(maps.first['covid_status']);
+  }
+
+  Future<List<CovidStatusUpdate>> getCovidStatusupdates(
+      String identifier) async {
+    final Database db = await _getDatabase();
+    final maps = await db.query('covid_states',
+        where: 'contact_id = ?',
+        whereArgs: [identifier],
+        orderBy: "updated_at DESC");
+    return List.generate(
+        maps.length, (i) => CovidStatusUpdate.fromDatabase(maps[i]));
   }
 }
